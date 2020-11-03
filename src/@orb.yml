@@ -13,3 +13,42 @@ display:
 # If your orb requires other orbs, you can import them like this. Otherwise remove the "orbs" stanza.
 # orbs:
 #  hello: circleci/hello-build@0.0.5
+
+commands:
+  install:
+    description: |
+      Install the AWS CLI via pip.
+
+    steps:
+      - run:
+          name: Clone eb install script repo
+          command: |
+            git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
+
+      - run:
+          name: Install AWS and AWS EB CLIs
+          command: |
+            python --version
+            python aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
+            echo 'export PATH="/home/circleci/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+            echo $PATH
+            ls -al /home/circleci/.ebcli-virtual-env/executables
+            eb --version
+  aws:
+    description: 'Installing AWS CLI and creating credentials from CircleCI environment variables'
+    steps:
+      - run:
+          name: Installing deployment dependencies
+          working_directory: /
+          command: |
+            source ~/.bash_profile
+            eb --version
+      - run:
+          name: Create AWS credentials from CircleCI environment variables
+          command: |
+            mkdir ~/.aws
+            touch ~/.aws/config
+            chmod 600 ~/.aws/config
+            echo "[profile eb-cli]" > ~/.aws/config
+            echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/config
+            echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/config
