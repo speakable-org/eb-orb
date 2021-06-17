@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  # Replace this with your own!
+  # Note: if dev orb is expired, change the orb version to the current production to regenerate
   aws-eb-cli: speakable-org/aws-eb-cli@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   bats: circleci/bats@1.0
