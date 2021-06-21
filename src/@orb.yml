@@ -28,8 +28,8 @@ commands:
       - run:
           name: Install AWS and AWS EB CLIs
           command: |
-            python --version
-            python aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
+            python3 --version
+            python3 aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
             echo 'export PATH="/home/circleci/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
             echo $PATH
             ls -al /home/circleci/.ebcli-virtual-env/executables
